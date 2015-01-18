@@ -3,9 +3,10 @@ using System.Collections;
 
 public class PivotController : MonoBehaviour {
 
-	public float direction;
+	public Vector3 direction;
 	public float pullback;
 	public float maxpullback;
+	public DogController Dog;
 	bool holddown;
 	GameObject PivotEnd;
 	GameObject Dot1;
@@ -38,18 +39,22 @@ public class PivotController : MonoBehaviour {
 			Dot1.renderer.enabled = false;
 			Dot2.renderer.enabled = false;
 			Dot3.renderer.enabled = false;
+			pullback = Vector3.Distance(transform.position, PivotEnd.transform.position);
+			direction = transform.position - pz;
+			Dog.Bump(direction, pullback);
 		}
 		if(Input.GetMouseButtonDown(0))
 		{
 			holddown = true;
+			//GameObject.Find("Dog").transform.position = pz;
 			transform.position = pz;
 		}
 
 		if(holddown == true)
 		{
 			var distance = Vector3.Distance(transform.position, pz);
-			Debug.DrawLine(transform.position, pz);
-			print("Distance: " + distance);
+			//Debug.DrawLine(transform.position, pz);
+			//print("Distance: " + distance);
 			if(distance <= maxpullback)
 			{
 				Vector3 diff = transform.position - pz;
@@ -57,6 +62,7 @@ public class PivotController : MonoBehaviour {
 
 				float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
 				PivotEnd.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 180);
+				Debug.DrawRay(pz, diff);
 
 				PivotEnd.renderer.enabled = true;
 				Dot1.renderer.enabled = true;
