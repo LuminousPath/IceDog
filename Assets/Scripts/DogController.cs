@@ -22,10 +22,10 @@ public class DogController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		GetComponent<SpriteRenderer>().sprite = DogLeft;
 		print (GetComponent<SpriteRenderer>().sprite.name);
-		if(GetComponent<SpriteRenderer>().sprite == null)
-		   print("Something went wrong");
+
 	}
 
 	public void Bump(Vector3 direction, float Force)
@@ -37,29 +37,19 @@ public class DogController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Direction.x >= 0)
+		if(Mathf.Abs(Direction.x) >= Mathf.Abs(Direction.y))
 		{
-			if(Direction.y >= 0)
-			{
-				if(Direction.x >= Direction.y)
-				{
-					GetComponent<SpriteRenderer>().sprite = DogRight;
-				}
-				else
-					GetComponent<SpriteRenderer>().sprite = DogUp;
-			}
+			if(Direction.x >= 0)
+				GetComponent<SpriteRenderer>().sprite = DogRight;
+			else
+				GetComponent<SpriteRenderer>().sprite = DogLeft;
 		}
 		else
 		{
-			if(Direction.y <= 0)
-			{
-				if(Direction.x >= Direction.y)
-				{
-					GetComponent<SpriteRenderer>().sprite = DogDown;
-				}
-				else
-					GetComponent<SpriteRenderer>().sprite = DogLeft;
-			}
+			if(Direction.y >= 0)
+				GetComponent<SpriteRenderer>().sprite = DogUp;
+			else
+				GetComponent<SpriteRenderer>().sprite = DogDown;
 		}
 
 		transform.Translate(Direction.x * Speed, Direction.y * Speed, 0);
@@ -69,12 +59,4 @@ public class DogController : MonoBehaviour {
 			Speed = 0;
 	}
 
-	void OnTriggerExit(Collider coll)
-	{
-		if(coll.gameObject.name == "Ice")
-		{
-			Speed = 0;
-		}
-	}
-	
 }
